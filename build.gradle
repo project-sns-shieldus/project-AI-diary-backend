@@ -48,6 +48,12 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
+	// MapStruct 라이브러리 추가
+	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+	// MapStruct 프로세서 추가 (컴파일 타임에 Mapper 클래스를 생성)
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+
 }
 
 dependencyManagement {
