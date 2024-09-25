@@ -21,15 +21,15 @@ public class DiaryController {
 
     // 일기 작성
     @PostMapping("/add")
-    public ResponseEntity<Integer> addDiary(@RequestBody DiaryRequest diaryRequest) {
-        int diaryId = diaryService.addDiary(diaryRequest);
+    public ResponseEntity<Long> addDiary(@RequestBody DiaryRequest diaryRequest) {
+        long diaryId = diaryService.addDiary(diaryRequest);
         return ResponseEntity.ok(diaryId);
     }
 
     //일기 수정
     @PutMapping("/update/{id}")
-    public ResponseEntity<Integer> updateDiary(@PathVariable("id") int diaryId, @RequestBody DiaryUpdateRequest diaryUpdateRequest) {
-        int updatedDiaryId = diaryService.updateDiary(diaryId, diaryUpdateRequest);
+    public ResponseEntity<Long> updateDiary(@PathVariable("id") long diaryId, @RequestBody DiaryUpdateRequest diaryUpdateRequest) {
+        long updatedDiaryId = diaryService.updateDiary(diaryId, diaryUpdateRequest);
         return ResponseEntity.ok(updatedDiaryId);
     }
 
@@ -43,7 +43,7 @@ public class DiaryController {
 
     //일기 상세보기
     @GetMapping("/get/{id}")
-    public ResponseEntity<DiaryResponse> getDiaryDetailById(@PathVariable("id") int diaryId) {
+    public ResponseEntity<DiaryResponse> getDiaryDetailById(@PathVariable("id") long diaryId) {
         DiaryResponse diaryResponse = diaryService.getDiaryDetailById(diaryId);
         return ResponseEntity.ok(diaryResponse);
     }
@@ -56,7 +56,7 @@ public class DiaryController {
     }
     //일기 삭제
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteDiary(@PathVariable int id) {
+    public ResponseEntity<Void> deleteDiary(@PathVariable long id) {
         diaryService.deleteDiary(id);
         //return new ResponseEntity<>("Deleted", HttpStatus.OK); //ResponseEntity<String>로 선언해야힘
         return ResponseEntity.noContent().build(); //ResponseEntity<Void>로 선언해야힘

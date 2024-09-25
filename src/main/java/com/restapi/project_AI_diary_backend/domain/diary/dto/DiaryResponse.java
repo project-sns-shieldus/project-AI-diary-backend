@@ -11,10 +11,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DiaryResponse {
-    private int diaryId;
+    private long diaryId;
+    private long userid;
+    private LocalDate diaryDate;
     private String title;
-    private String content;
-    private LocalDate createdDate;
-    private String contentCheck;
-    private LocalDateTime updatedDateTime;
+    private String weather;
+    private String notes;
+    private LocalDate createdAt;
+    private LocalDate updatedDateAt;
 }

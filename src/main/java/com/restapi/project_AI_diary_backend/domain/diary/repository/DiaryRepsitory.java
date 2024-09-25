@@ -8,10 +8,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface DiaryRepsitory extends JpaRepository<Diary, Integer> {
-    Optional<Diary> findById(int diaryId);
+public interface DiaryRepsitory extends JpaRepository<Diary, Long> {
+    Optional<Diary> findById(long diaryId);
 
-    List<Diary> findByCreatedDate(LocalDate createdDate);
+    List<Diary> findByDiaryDate(LocalDate diaryDate);
 
     List<Diary> findAll();
 

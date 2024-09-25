@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -20,7 +21,7 @@ public class Diary {
 
     @NotNull
     @Column(name = "diary_date")
-    private LocalDateTime diaryDate;  // timestamp in the database
+    private LocalDate diaryDate;
 
     @Column(name = "notes")
     private String notes;
@@ -45,6 +46,4 @@ public class Diary {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    @Column(name = "emotion_id")
-    private long emotionId;
 }

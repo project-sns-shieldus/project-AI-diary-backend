@@ -3,12 +3,11 @@ package com.restapi.project_AI_diary_backend.domain.token.business;
 import com.restapi.project_AI_diary_backend.common.annotation.Business;
 import com.restapi.project_AI_diary_backend.common.error.ErrorCode;
 import com.restapi.project_AI_diary_backend.common.exception.ApiException;
-import com.restapi.project_AI_diary_backend.db.user.User;
+import com.restapi.project_AI_diary_backend.domain.user.entity.User;
 import com.restapi.project_AI_diary_backend.domain.token.controller.model.TokenResponse;
 import com.restapi.project_AI_diary_backend.domain.token.converter.TokenConverter;
 import com.restapi.project_AI_diary_backend.domain.token.service.TokenService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
