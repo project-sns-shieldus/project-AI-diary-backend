@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.antlr.v4.runtime.misc.NotNull;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -14,21 +13,38 @@ public class Diary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "diary_id")
-    private int diaryId;
+    private long diaryId;
+
+    @Column(name = "user_id")
+    private long userId;
 
     @NotNull
-    @Column(name = "contents")
-    private String content;
+    @Column(name = "diary_date")
+    private LocalDateTime diaryDate;  // timestamp in the database
 
-    //@NotNull
+    @Column(name = "notes")
+    private String notes;
+
+    @Column(name = "is_ai")
+    private boolean isAi;
+
     @Column(name = "title")
     private String title;
 
-    @NotNull
-    @Column
-    private LocalDate createdDate; //= LocalDateTime.now();
+    @Column(name = "weather")
+    private String weather;
 
     @NotNull
-    @Column
-    private LocalDateTime updatedDatetime;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @NotNull
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "emotion_id")
+    private long emotionId;
 }
