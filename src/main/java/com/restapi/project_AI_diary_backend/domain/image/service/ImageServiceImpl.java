@@ -1,4 +1,4 @@
-package com.restapi.project_AI_diary_backend.domain.image.service.impl;
+package com.restapi.project_AI_diary_backend.domain.image.service;
 
 import com.restapi.project_AI_diary_backend.domain.diary.entity.Diary;
 import com.restapi.project_AI_diary_backend.domain.diary.repository.DiaryRepository;
@@ -6,8 +6,6 @@ import com.restapi.project_AI_diary_backend.domain.image.entity.Image;
 import com.restapi.project_AI_diary_backend.domain.image.repository.ImageRepository;
 import com.restapi.project_AI_diary_backend.domain.image.service.ImageService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,6 +36,15 @@ public class ImageServiceImpl implements ImageService {
     public void saveImages(Long diaryId, List<MultipartFile> images) throws IOException {
         Diary diary = diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid diary ID: " + diaryId));
+
+        // 업로드 디렉토리 존재 여부 확인 및 생성
+        File directory = new File(uploadDir);
+        if (!directory.exists()) {
+            boolean dirCreated = directory.mkdirs();
+            if (!dirCreated) {
+                throw new IOException("Failed to create upload directory: " + uploadDir);
+            }
+        }
 
         List<Image> imageEntities = new ArrayList<>();
 
@@ -102,3 +109,4 @@ public class ImageServiceImpl implements ImageService {
         return allowedExtensions.contains(extension.toLowerCase());
     }
 }
+
