@@ -1,0 +1,46 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: project-AI-diary-backend
+
+  # Database 설정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/diaryaidb?useUnicode=true&allowPublicKeyRetrieval=true
+    username: springboot
+    password: p@ssw0rd
+
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+      format_sql: true
+      hibernate:
+      dialect:
+      ddl-auto: update
+
+  flyway:
+#    url: ${DATABASE_URL}
+#    user: ${DATABASE_USERNAME}
+#    password: ${DATABASE_PASSWORD}
+#    locations: classpath:/db/migration
+#    baselineOnMigrate: true
+    enabled: false
+
+
+#log 설정
+logging:
+  config: classpath:logback-spring.xml
+#  level:
+#    root: DEBUG
+#  pattern:
+#     console: "%d %5p {%c} %m%n"
+
+token:
+  secret:
+    key: ${JWT_SECRET_KEY}
+  access-token:
+    plus-hour: 1
+  refresh-token:
+    plus-hour: 12
