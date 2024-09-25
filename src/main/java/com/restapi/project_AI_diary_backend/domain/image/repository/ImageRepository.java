@@ -10,6 +10,4 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
 
     // 특정 다이어리의 모든 이미지 반환
     List<Image> findByDiary_DiaryId(Long diaryId);
-    // 생성 날짜로 이미지 조회
-    List<Image> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 }
