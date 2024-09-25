@@ -6,7 +6,7 @@ import com.restapi.project_AI_diary_backend.domain.diary.dto.DiaryResponse;
 import com.restapi.project_AI_diary_backend.domain.diary.dto.DiaryUpdateRequest;
 import com.restapi.project_AI_diary_backend.domain.diary.entity.Diary;
 import com.restapi.project_AI_diary_backend.domain.diary.mapper.DiaryMapper;
-import com.restapi.project_AI_diary_backend.domain.diary.repository.DiaryRepsitory;
+import com.restapi.project_AI_diary_backend.domain.diary.repository.DiaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
@@ -22,7 +22,7 @@ public class DiaryService {
     DiaryMapper diaryMapper;
 
     @Autowired
-    DiaryRepsitory diaryRepository;
+    DiaryRepository diaryRepository;
 
     // 일기 추가 시 userId 자동으로 설정
     public long addDiary(DiaryRequest diaryRequest) {

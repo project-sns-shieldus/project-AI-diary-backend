@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface DiaryRepsitory extends JpaRepository<Diary, Long> {
+public interface DiaryRepository extends JpaRepository<Diary, Long> {
     Optional<Diary> findById(long diaryId);
 
     List<Diary> findByDiaryDate(LocalDate diaryDate);
