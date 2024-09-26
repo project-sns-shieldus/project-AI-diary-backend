@@ -4,6 +4,7 @@ import com.restapi.project_AI_diary_backend.domain.diary.entity.Diary;
 import com.restapi.project_AI_diary_backend.domain.diary.repository.DiaryRepository;
 import com.restapi.project_AI_diary_backend.domain.image.entity.Image;
 import com.restapi.project_AI_diary_backend.domain.image.repository.ImageRepository;
+import com.restapi.project_AI_diary_backend.domain.image.service.ImageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

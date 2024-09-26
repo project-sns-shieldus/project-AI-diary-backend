@@ -1,7 +1,6 @@
 package com.restapi.project_AI_diary_backend.domain.image.controller;
 
 import com.restapi.project_AI_diary_backend.domain.image.entity.Image;
-
 import com.restapi.project_AI_diary_backend.domain.image.service.ImageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -28,6 +27,7 @@ public class ImageController {
     public ImageController(ImageService imageService) {
         this.imageService = imageService;
     }
+
 
     // consume 코드를 추가하여 스웨거에서 테스트 시 파일 업로드 가능하게 함
     // ("diaryId")를 추가하여 파라미터 값으로 받을 수 있게 함
@@ -83,6 +83,7 @@ public class ImageController {
     }
 
     @DeleteMapping("/diary/{diaryId}")
+
     public ResponseEntity<String> deleteImagesByDiaryId(@PathVariable("diaryId") Long diaryId) {
         try {
             imageService.deleteImagesByDiaryId(diaryId);
