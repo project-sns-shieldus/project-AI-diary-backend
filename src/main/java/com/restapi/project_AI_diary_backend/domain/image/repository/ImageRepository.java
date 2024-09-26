@@ -11,3 +11,4 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     // 특정 다이어리의 모든 이미지 반환
     List<Image> findByDiary_DiaryId(Long diaryId);
 }
+

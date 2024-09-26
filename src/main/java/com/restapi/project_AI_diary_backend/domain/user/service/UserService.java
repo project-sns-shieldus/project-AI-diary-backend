@@ -2,8 +2,8 @@ package com.restapi.project_AI_diary_backend.domain.user.service;
 
 import com.restapi.project_AI_diary_backend.common.error.ErrorCode;
 import com.restapi.project_AI_diary_backend.common.exception.ApiException;
-import com.restapi.project_AI_diary_backend.db.user.User;
-import com.restapi.project_AI_diary_backend.db.user.UserRepository;
+import com.restapi.project_AI_diary_backend.domain.user.entity.User;
+import com.restapi.project_AI_diary_backend.domain.user.repository.UserRepository;
 import com.restapi.project_AI_diary_backend.domain.user.dto.UserDto;
 import com.restapi.project_AI_diary_backend.domain.user.dto.UserLoginRequest;
 import lombok.RequiredArgsConstructor;

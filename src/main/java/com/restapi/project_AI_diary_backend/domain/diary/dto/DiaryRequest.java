@@ -10,8 +10,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DiaryRequest {
+    private LocalDate diaryDate;
     private String title;
-    private String content;
-    private LocalDate createdDate = LocalDate.now();
-    //private LocalDate diaryDate;
+    private String weather;
+    private String notes;
+    private LocalDate createdAt = LocalDate.now();
 }

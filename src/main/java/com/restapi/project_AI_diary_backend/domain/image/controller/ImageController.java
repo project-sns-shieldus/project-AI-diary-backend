@@ -28,8 +28,11 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @PostMapping("/{diaryId}")
-    public ResponseEntity<String> uploadImages(@PathVariable Long diaryId,
+
+    // consume 코드를 추가하여 스웨거에서 테스트 시 파일 업로드 가능하게 함
+    // ("diaryId")를 추가하여 파라미터 값으로 받을 수 있게 함
+    @PostMapping(value = "/{diaryId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadImages(@PathVariable("diaryId")  Long diaryId,
                                                @RequestParam("images") List<MultipartFile> images) {
         try {
             imageService.saveImages(diaryId, images);
@@ -42,7 +45,7 @@ public class ImageController {
     }
 
     @GetMapping("/diary/{diaryId}")
-    public ResponseEntity<List<Image>> getImagesByDiaryId(@PathVariable Long diaryId) {
+    public ResponseEntity<List<Image>> getImagesByDiaryId(@PathVariable("diaryId") Long diaryId) {
         List<Image> images = imageService.getImagesByDiaryId(diaryId);
         if (images.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -80,7 +83,8 @@ public class ImageController {
     }
 
     @DeleteMapping("/diary/{diaryId}")
-    public ResponseEntity<String> deleteImagesByDiaryId(@PathVariable Long diaryId) {
+
+    public ResponseEntity<String> deleteImagesByDiaryId(@PathVariable("diaryId") Long diaryId) {
         try {
             imageService.deleteImagesByDiaryId(diaryId);
             return ResponseEntity.ok("Images deleted successfully.");

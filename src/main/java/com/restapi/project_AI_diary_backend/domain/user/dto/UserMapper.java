@@ -2,7 +2,7 @@ package com.restapi.project_AI_diary_backend.domain.user.dto;
 
 import com.restapi.project_AI_diary_backend.common.error.ErrorCode;
 import com.restapi.project_AI_diary_backend.common.exception.ApiException;
-import com.restapi.project_AI_diary_backend.db.user.User;
+import com.restapi.project_AI_diary_backend.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -109,4 +109,3 @@ public class ImageServiceImpl implements ImageService {
         return allowedExtensions.contains(extension.toLowerCase());
     }
 }
-

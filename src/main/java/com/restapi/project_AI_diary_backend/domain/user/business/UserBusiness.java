@@ -2,7 +2,7 @@ package com.restapi.project_AI_diary_backend.domain.user.business;
 
 
 import com.restapi.project_AI_diary_backend.common.annotation.Business;
-import com.restapi.project_AI_diary_backend.db.user.User;
+import com.restapi.project_AI_diary_backend.domain.user.entity.User;
 import com.restapi.project_AI_diary_backend.domain.token.business.TokenBusiness;
 import com.restapi.project_AI_diary_backend.domain.token.controller.model.TokenResponse;
 import com.restapi.project_AI_diary_backend.domain.user.dto.UserLoginRequest;

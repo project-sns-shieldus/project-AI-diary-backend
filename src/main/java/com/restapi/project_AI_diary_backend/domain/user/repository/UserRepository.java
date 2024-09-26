@@ -1,5 +1,6 @@
-package com.restapi.project_AI_diary_backend.db.user;
+package com.restapi.project_AI_diary_backend.domain.user.repository;
 
+import com.restapi.project_AI_diary_backend.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
