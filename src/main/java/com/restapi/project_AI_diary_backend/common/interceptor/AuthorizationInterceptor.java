@@ -4,7 +4,7 @@ package com.restapi.project_AI_diary_backend.common.interceptor;
 import com.restapi.project_AI_diary_backend.common.error.ErrorCode;
 import com.restapi.project_AI_diary_backend.common.error.TokenErrorCode;
 import com.restapi.project_AI_diary_backend.common.exception.ApiException;
-import com.restapi.project_AI_diary_backend.db.user.UserRepository;
+import com.restapi.project_AI_diary_backend.domain.user.repository.UserRepository;
 import com.restapi.project_AI_diary_backend.domain.token.business.TokenBusiness;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,9 +53,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             var userOptional = userRepository.findByEmail(email); // email로 사용자 조회
 
             if (userOptional.isPresent()) {
-                var username = userOptional.get().getUsername(); // username 가져오기
+                var userId = userOptional.get().getUserId(); // userId 가져오기
                 var requestContext = Objects.requireNonNull(RequestContextHolder.getRequestAttributes());
-                requestContext.setAttribute("username", username, RequestAttributes.SCOPE_REQUEST); // username 저장
+                requestContext.setAttribute("userId", userId, RequestAttributes.SCOPE_REQUEST); // userId 저장
                 return true;
             } else {
                 throw new ApiException(ErrorCode.BAD_REQUEST, "사용자를 찾을 수 없습니다.");

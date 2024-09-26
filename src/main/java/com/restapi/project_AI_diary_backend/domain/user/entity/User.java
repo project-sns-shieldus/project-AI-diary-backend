@@ -1,4 +1,4 @@
-package com.restapi.project_AI_diary_backend.db.user;
+package com.restapi.project_AI_diary_backend.domain.user.entity;
 
 import com.restapi.project_AI_diary_backend.common.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +18,7 @@ import java.time.LocalDateTime;
 public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private long userId;
 

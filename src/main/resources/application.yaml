@@ -3,6 +3,10 @@ spring:
     active: dev
   application:
     name: project-AI-diary-backend
+  servlet:
+    multipart:
+      max-file-size: 10MB  # 파일 하나의 최대 크기(이미지 저장을 위함)
+      max-request-size: 10MB  # 전체 요청 크기
 
   # Database 설정
   datasource:
@@ -44,3 +48,9 @@ token:
     plus-hour: 1
   refresh-token:
     plus-hour: 12
+
+#내부 디렉토리 저장 불가 이슈로 로컬 저장으로 변경
+image:
+  upload:
+    dir: C:\image
+
