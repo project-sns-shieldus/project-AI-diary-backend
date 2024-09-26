@@ -9,7 +9,8 @@ import java.util.List;
 public interface ImageService {
 
     // 이미지 저장 메서드
-    void saveImages(Long diaryId, List<MultipartFile> images) throws IOException;
+    void saveImages(Long diaryId, List<String> imageUrls) throws IOException;
+
 
     // 다이어리 ID로 이미지 조회 메서드
     List<Image> getImagesByDiaryId(Long diaryId);

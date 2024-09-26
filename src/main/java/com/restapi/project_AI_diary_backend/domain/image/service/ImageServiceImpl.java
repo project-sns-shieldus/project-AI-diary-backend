@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -33,7 +36,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public void saveImages(Long diaryId, List<MultipartFile> images) throws IOException {
+    public void saveImages(Long diaryId, List<String> imageUrls) throws IOException {
         Diary diary = diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid diary ID: " + diaryId));
 
@@ -48,11 +51,10 @@ public class ImageServiceImpl implements ImageService {
 
         List<Image> imageEntities = new ArrayList<>();
 
-        for (MultipartFile file : images) {
-            if (!file.isEmpty()) {
-                // 요거 사용해서 확장자 필터링 예정. (dall-e가 뭘 뽑아서 주는질 몰라서..)
-                String originalFilename = file.getOriginalFilename();
-                String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        for (String imageUrl : imageUrls) {
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                // URL에서 파일 확장자 추출
+                String extension = getFileExtensionFromUrl(imageUrl);
                 if (!isAllowedExtension(extension)) {
                     throw new IllegalArgumentException("Unsupported file type: " + extension);
                 }
@@ -60,12 +62,11 @@ public class ImageServiceImpl implements ImageService {
                 // 중복을 방지용 UUID 변환
                 String savedFileName = UUID.randomUUID().toString() + extension;
 
-                // 로컬에 저장
+                // 이미지 다운로드 후 로컬에 저장
                 String filePath = uploadDir + File.separator + savedFileName;
-                File dest = new File(filePath);
-                file.transferTo(dest);
+                downloadImageFromUrl(imageUrl, filePath);
 
-                // 데이터베이스에 파일명만 저장했다가 컨트롤러단에서 파일명으로 불러서 프론트로 넘겨줄겁니다.
+                // 데이터베이스에 파일명만 저장
                 Image image = Image.builder()
                         .diary(diary)
                         .fileName(savedFileName) // 파일명만 저장
@@ -103,9 +104,29 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-    // 허용된 파일 확장자 검증 메서드 (임시로 해놓음)
+    // 허용된 파일 확장자 검증 메서드
     private boolean isAllowedExtension(String extension) {
         List<String> allowedExtensions = List.of(".jpg", ".jpeg", ".png", ".gif");
         return allowedExtensions.contains(extension.toLowerCase());
+    }
+
+    // URL에서 파일 확장자를 추출하는 메서드
+    private String getFileExtensionFromUrl(String imageUrl) {
+        return imageUrl.substring(imageUrl.lastIndexOf("."));
+    }
+
+    // URL로부터 이미지를 다운로드하는 메서드
+    private void downloadImageFromUrl(String imageUrl, String destinationFile) throws IOException {
+        URL url = new URL(imageUrl);
+        try (BufferedInputStream in = new BufferedInputStream(url.openStream());
+             FileOutputStream fileOutputStream = new FileOutputStream(destinationFile)) {
+            byte[] dataBuffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            throw new IOException("Failed to download image from URL: " + imageUrl, e);
+        }
     }
 }
