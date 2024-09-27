@@ -9,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,14 +27,12 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-
-    // consume 코드를 추가하여 스웨거에서 테스트 시 파일 업로드 가능하게 함
-    // ("diaryId")를 추가하여 파라미터 값으로 받을 수 있게 함
-    @PostMapping(value = "/{diaryId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadImages(@PathVariable("diaryId")  Long diaryId,
-                                               @RequestParam("images") List<MultipartFile> images) {
+    // 수정: consume 제거 및 @RequestParam 변경
+    @PostMapping(value = "/{diaryId}")
+    public ResponseEntity<String> uploadImages(@PathVariable("diaryId") Long diaryId,
+                                               @RequestParam("imageUrls") List<String> imageUrls) {
         try {
-            imageService.saveImages(diaryId, images);
+            imageService.saveImages(diaryId, imageUrls);
             return ResponseEntity.ok("Images uploaded successfully.");
         } catch (IOException e) {
             return ResponseEntity.status(500).body("Failed to upload images.");
@@ -53,7 +50,6 @@ public class ImageController {
         return ResponseEntity.ok(images);
     }
 
-    //필요없을시 지워도 됩니다
     @GetMapping("/{fileName}")
     public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
         try {
@@ -83,7 +79,6 @@ public class ImageController {
     }
 
     @DeleteMapping("/diary/{diaryId}")
-
     public ResponseEntity<String> deleteImagesByDiaryId(@PathVariable("diaryId") Long diaryId) {
         try {
             imageService.deleteImagesByDiaryId(diaryId);
