@@ -15,5 +15,5 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
     List<Diary> findAll();
 
-
+    List<Diary> findByUserId(long userId);
 }
