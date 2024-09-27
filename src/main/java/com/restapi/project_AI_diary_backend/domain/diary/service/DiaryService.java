@@ -7,7 +7,9 @@ import com.restapi.project_AI_diary_backend.domain.diary.dto.DiaryUpdateRequest;
 import com.restapi.project_AI_diary_backend.domain.diary.entity.Diary;
 import com.restapi.project_AI_diary_backend.domain.diary.mapper.DiaryMapper;
 import com.restapi.project_AI_diary_backend.domain.diary.repository.DiaryRepository;
+import com.restapi.project_AI_diary_backend.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -23,6 +25,9 @@ public class DiaryService {
 
     @Autowired
     DiaryRepository diaryRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     // 일기 추가 시 userId 자동으로 설정
     public long addDiary(DiaryRequest diaryRequest) {
@@ -89,6 +94,17 @@ public class DiaryService {
                 .collect(Collectors.toList());
         return diaryResponseList;
     }
+
+    //사용자 별 모든 일기 목록 조회
+    public List<DiaryResponse> getDiaryByUser(String email) {
+        long userId = userRepository.findByEmail(email).get().getUserId();
+        List<Diary> diaries = diaryRepository.findByUserId(userId);
+        List<DiaryResponse> diaryResponseList = diaries.stream()
+                .map(diaryMapper::diaryToDiaryResponse)
+                .collect(Collectors.toList());
+        return diaryResponseList;
+    }
+
 
     public void deleteDiary(long diaryId) {
         diaryRepository.deleteById(diaryId);

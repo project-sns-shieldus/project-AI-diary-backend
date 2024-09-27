@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/diary")
+@CrossOrigin(origins="http://localhost:3000", allowedHeaders="*")
 public class DiaryController {
     @Autowired
     DiaryService diaryService;
@@ -42,7 +43,7 @@ public class DiaryController {
     }
 
     //일기 상세보기
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/byId/{id}")
     public ResponseEntity<DiaryResponse> getDiaryDetailById(@PathVariable("id") long diaryId) {
         DiaryResponse diaryResponse = diaryService.getDiaryDetailById(diaryId);
         return ResponseEntity.ok(diaryResponse);
@@ -54,6 +55,14 @@ public class DiaryController {
         List<DiaryResponse> diaryResponseList = diaryService.getAllDiary();
         return ResponseEntity.ok(diaryResponseList);
     }
+
+    //사용자 별 모든 일기 목록 조회
+    @GetMapping("/get/byEmail/{email}")
+    public ResponseEntity<List<DiaryResponse>> getDiaryByUser(@PathVariable("email") String email) {
+        List<DiaryResponse> diaryResponseList = diaryService.getDiaryByUser(email);
+        return ResponseEntity.ok(diaryResponseList);
+    }
+
     //일기 삭제
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteDiary(@PathVariable long id) {
