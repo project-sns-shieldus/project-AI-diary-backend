@@ -26,24 +26,26 @@ public class TokenBusiness {
      * 3. converter -> token response로 변경
      */
 
-    public TokenResponse issueToken(User userEntity){
+    public TokenResponse issueToken(User userEntity) {
+        // userEntity가 null인 경우 예외를 발생시킵니다.
+        if (userEntity == null) {
+            throw new ApiException(ErrorCode.NULL_POINT);
+        }
 
-        return Optional.ofNullable(userEntity)
-                .map(user -> {
-                    return user.getUsername();
-                })
-                .map(user -> {
-                    String email = userEntity.getEmail();
-                    var accessToken = tokenService.issueAccessToken(email);
-                    var refreshToken = tokenService.issueRefreshToken(email);
-                    return tokenConverter.toResponse(accessToken, refreshToken);
-                })
-                .orElseThrow(
-                        ()-> new ApiException(ErrorCode.NULL_POINT)
-                );
+        // userEntity에서 이메일과 사용자 이름을 추출
+        String email = userEntity.getEmail();
+        if (email == null || email.isEmpty()) {
+            throw new ApiException(ErrorCode.NULL_POINT); // 적절한 예외 처리
+        }
 
+        // accessToken과 refreshToken 발행
+        var accessToken = tokenService.issueAccessToken(email);
+        var refreshToken = tokenService.issueRefreshToken(email);
 
+        // TokenResponse로 변환하여 반환
+        return tokenConverter.toResponse(accessToken, refreshToken);
     }
+
 
     public String validationAccessToken(String accessToken){
         var email = tokenService.validationToken(accessToken);
