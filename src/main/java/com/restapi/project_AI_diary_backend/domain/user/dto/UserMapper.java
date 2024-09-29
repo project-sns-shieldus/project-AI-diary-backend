@@ -22,7 +22,7 @@ public class UserMapper {
         // 엔티티로 변환
         return User.builder()
                 .email(request.getEmail())
-                .username(request.getUsername())
+                //.username(request.getUsername())
                 .password(request.getPassword())
                 .build();
     }
@@ -32,7 +32,7 @@ public class UserMapper {
         return Optional.ofNullable(user)
                 .map(it -> UserResponse.builder()
                         .userId(user.getUserId())
-                        .username(user.getUsername())
+                        //.username(user.getUsername())
                         .email(user.getEmail())
                         .password(user.getPassword())
                         .lastDiaryAt(user.getLastDiaryAt())
