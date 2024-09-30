@@ -2,13 +2,13 @@ package com.restapi.project_AI_diary_backend.domain.user.business;
 
 
 import com.restapi.project_AI_diary_backend.common.annotation.Business;
+import com.restapi.project_AI_diary_backend.common.error.ErrorCode;
+import com.restapi.project_AI_diary_backend.common.exception.ApiException;
+import com.restapi.project_AI_diary_backend.domain.user.dto.*;
 import com.restapi.project_AI_diary_backend.domain.user.entity.User;
 import com.restapi.project_AI_diary_backend.domain.token.business.TokenBusiness;
 import com.restapi.project_AI_diary_backend.domain.token.controller.model.TokenResponse;
-import com.restapi.project_AI_diary_backend.domain.user.dto.UserLoginRequest;
-import com.restapi.project_AI_diary_backend.domain.user.dto.UserMapper;
-import com.restapi.project_AI_diary_backend.domain.user.dto.UserRegisterRequest;
-import com.restapi.project_AI_diary_backend.domain.user.dto.UserResponse;
+import com.restapi.project_AI_diary_backend.domain.user.repository.UserRepository;
 import com.restapi.project_AI_diary_backend.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +20,7 @@ public class UserBusiness {
     private final UserService userService;
     private final UserMapper userMapper;
     private final TokenBusiness tokenBusiness;
+    private final UserRepository userRepository;
 
     // 로그인 ID를 사용하여 사용자 정보를 조회하고, DTO로 변환합니다.
     public UserResponse info(String loginId) {
@@ -65,4 +66,21 @@ public class UserBusiness {
         var response = userMapper.toResponse(userEntity);
         return response;
     }
+
+    public UserResponse updateUser(String username, UserDto userDto) {
+        // 사용자 검색
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND, "존재하지 않는 사용자입니다."));
+
+        // 사용자 정보 업데이트
+        user.setEmail(userDto.getEmail());
+        user.setUsername(userDto.getUsername());
+
+        // 업데이트 후 저장
+        userRepository.save(user);
+
+        // 업데이트된 사용자 정보를 반환
+        return new UserResponse(user.getUserId(), user.getUsername(), user.getEmail());
+    }
+
 }
