@@ -4,12 +4,10 @@ package com.restapi.project_AI_diary_backend.domain.user.controller;
 import com.restapi.project_AI_diary_backend.common.api.Api;
 import com.restapi.project_AI_diary_backend.common.error.ErrorCode;
 import com.restapi.project_AI_diary_backend.common.exception.ApiException;
+import com.restapi.project_AI_diary_backend.domain.token.business.TokenBusiness;
 import com.restapi.project_AI_diary_backend.domain.token.controller.model.TokenResponse;
 import com.restapi.project_AI_diary_backend.domain.user.business.UserBusiness;
-import com.restapi.project_AI_diary_backend.domain.user.dto.UserDto;
-import com.restapi.project_AI_diary_backend.domain.user.dto.UserLoginRequest;
-import com.restapi.project_AI_diary_backend.domain.user.dto.UserRegisterRequest;
-import com.restapi.project_AI_diary_backend.domain.user.dto.UserResponse;
+import com.restapi.project_AI_diary_backend.domain.user.dto.*;
 import com.restapi.project_AI_diary_backend.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +22,7 @@ public class UserOpenApiController {
 
     private final UserService userService;
     private final UserBusiness userBusiness;
+    private final TokenBusiness tokenBusiness; // TokenBusiness 주입
 
     @PostMapping("/register")
     public ResponseEntity<Api<UserResponse>> register(
@@ -40,6 +39,28 @@ public class UserOpenApiController {
     ){
         var response = userBusiness.login(request);
         return ResponseEntity.ok(Api.OK(response));
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<Api<String>> changePassword(
+            @RequestBody ChangePasswordRequest request,
+            @RequestHeader("Authorization") String token
+    ) {
+        userBusiness.changePassword(request, token);
+        return ResponseEntity.ok(Api.OK("비밀번호 변경이 완료되었습니다."));
+    }
+    @PutMapping("/update-username")
+    public ResponseEntity<Api<String>> updateUsername(
+            @RequestBody UpdateUserRequest request,
+            @RequestHeader("Authorization") String token) {
+
+        // 토큰에서 이메일을 추출합니다.
+        String email = tokenBusiness.getEmailFromToken(token);
+
+        // 이메일과 새로운 유저명을 바탕으로 업데이트를 진행합니다.
+        userBusiness.updateUsernameAndEmail(email, request);
+
+        return ResponseEntity.ok(Api.OK("사용자 정보가 성공적으로 업데이트되었습니다."));
     }
 
     @GetMapping("/users/{username}")

@@ -26,11 +26,4 @@ public class UserResponse {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
-    // 추가 생성자: userId, username, email만 초기화하는 생성자
-    public UserResponse(Long userId, String username, String email) {
-        this.userId = userId;
-        this.username = username;
-        this.email = email;
-    }
 }
