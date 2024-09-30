@@ -20,12 +20,19 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public User register(User user) {
+        // 이메일 중복 여부 확인
+        boolean emailExists = userRepository.findByEmail(user.getEmail()).isPresent();
+        if (emailExists) {
+            throw new ApiException(ErrorCode.BAD_REQUEST, "이미 존재하는 이메일입니다.");
+        }
+
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        user.setCreatedAt(LocalDateTime.now());  // createdAt 설정
-        user.setUpdatedAt(LocalDateTime.now());  // updatedAt 설정
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         return userRepository.save(user);
     }
+
 
     public User login(UserLoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail())
@@ -67,4 +74,11 @@ public class UserService {
                 .updatedAt(user.getUpdatedAt())
                 .build();
     }
+    public void save(User user) {
+        userRepository.save(user);
+    }
+    public boolean checkEmailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
 }
