@@ -67,8 +67,8 @@ public class DiaryController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteDiary(@PathVariable long id) {
         diaryService.deleteDiary(id);
-        //return new ResponseEntity<>("Deleted", HttpStatus.OK); //ResponseEntity<String>로 선언해야힘
-        return ResponseEntity.noContent().build(); //ResponseEntity<Void>로 선언해야힘
+        //return new ResponseEntity<>("Deleted", HttpStatus.OK); //ResponseEntity<String>로 선언해야힘, 200반환
+        return ResponseEntity.noContent().build(); //ResponseEntity<Void>로 선언해야힘, 204반환
     }
 
 }

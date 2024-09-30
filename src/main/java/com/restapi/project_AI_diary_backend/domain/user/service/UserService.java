@@ -67,4 +67,25 @@ public class UserService {
                 .updatedAt(user.getUpdatedAt())
                 .build();
     }
+
+    public UserDto searchByEmail(String email) {
+        // 이메일로 사용자 검색
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+
+        // User 엔티티를 UserDto로 변환하여 반환
+        return new UserDto(user.getUserId(), user.getUsername(), user.getEmail(), user.getPassword(), user.getLastDiaryAt(), user.getCreatedAt(), user.getUpdatedAt());
+    }
+
+    // 사용자 정보 업데이트 메서드 추가
+    public UserDto updateUser(String email, String newUsername) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+
+        user.setUsername(newUsername);
+        userRepository.save(user);
+
+        // 업데이트된 사용자 정보를 반환
+        return new UserDto(user.getUserId(), user.getUsername(), user.getEmail());
+    }
 }
