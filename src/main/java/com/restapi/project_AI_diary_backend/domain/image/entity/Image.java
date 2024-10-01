@@ -23,7 +23,7 @@ public class Image {
     @Column(name = "image_id", nullable = false)
     private long imageId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "diary_id", nullable = false)
     private Diary diary;
 

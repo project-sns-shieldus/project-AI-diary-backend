@@ -14,6 +14,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,8 @@ public class ImageServiceImpl implements ImageService {
     private final DiaryRepository diaryRepository;
 
     // 이미지가 저장될 기본 경로를 설정 파일에서 가져옵니다.
-    @Value("${image.upload.dir}")
-    private String uploadDir;
+    // 파일이 저장될 경로
+    private static final String uploadDir = "src/main/resources/static/uploads/";
 
     public ImageServiceImpl(ImageRepository imageRepository, DiaryRepository diaryRepository) {
         this.imageRepository = imageRepository;
@@ -112,8 +113,17 @@ public class ImageServiceImpl implements ImageService {
 
     // URL에서 파일 확장자를 추출하는 메서드
     private String getFileExtensionFromUrl(String imageUrl) {
-        return imageUrl.substring(imageUrl.lastIndexOf("."));
+        try {
+            URL url = new URL(imageUrl);
+            String path = url.getPath(); // 쿼리 파라미터를 제외한 경로를 반환
+
+            // 경로에서 마지막 '.' 이후의 문자열을 파일 확장자로 취급할거
+            return path.substring(path.lastIndexOf("."));
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Invalid URL: " + imageUrl, e);
+        }
     }
+
 
     // URL로부터 이미지를 다운로드하는 메서드
     private void downloadImageFromUrl(String imageUrl, String destinationFile) throws IOException {

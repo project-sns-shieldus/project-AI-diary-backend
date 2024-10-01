@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/images")
@@ -20,24 +22,31 @@ public class ImageController {
 
     private final ImageService imageService;
 
-    @Value("${image.upload.dir}")
-    private String uploadDir;
+    private static final String uploadDir = "src/main/resources/static/uploads/";
 
     public ImageController(ImageService imageService) {
         this.imageService = imageService;
     }
 
     // 수정: consume 제거 및 @RequestParam 변경
-    @PostMapping(value = "/{diaryId}")
+    @PostMapping(value = "/{diaryId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> uploadImages(@PathVariable("diaryId") Long diaryId,
-                                               @RequestParam("imageUrls") List<String> imageUrls) {
+                                               @RequestBody Map<String, Object> requestBody) {
         try {
+            // 요청 바디에서 imageUrls를 가져옵니다.
+            List<String> imageUrls = (List<String>) requestBody.get("imageUrls");
+            if (imageUrls == null || imageUrls.isEmpty()) {
+                return ResponseEntity.badRequest().body("No image URLs provided.");
+            }
+
             imageService.saveImages(diaryId, imageUrls);
             return ResponseEntity.ok("Images uploaded successfully.");
         } catch (IOException e) {
+            e.printStackTrace();
             return ResponseEntity.status(500).body("Failed to upload images.");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Invalid request.");
         }
     }
 

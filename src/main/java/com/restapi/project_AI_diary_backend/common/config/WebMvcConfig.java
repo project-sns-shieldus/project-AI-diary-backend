@@ -42,7 +42,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/public/**", "/open-api/**")
                 .excludePathPatterns("/api/v1/register", "/api/v1/login")
                 .excludePathPatterns("/static/**", "/css/**", "/js/**")
-                .excludePathPatterns("/swagger-ui/**", "/v3/api-docs/**");
+                .excludePathPatterns("/swagger-ui/**", "/v3/api-docs/**")
+                .excludePathPatterns("/api/images/**");  // /api/images/** 경로는 인증 제외
     }
 
     @Override
