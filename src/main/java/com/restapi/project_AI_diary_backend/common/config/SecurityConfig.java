@@ -3,12 +3,14 @@ package com.restapi.project_AI_diary_backend.common.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -25,6 +27,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/open-api/gpt/**").permitAll()  // GPT API에 대한 접근을 허용
                         .requestMatchers("/ws-chat/**").permitAll()
+                        .requestMatchers("/api/images/**").permitAll()  // 이미지 파일에 대한 요청은 인증 없이 접근 가능
                         .anyRequest().permitAll()
                 );
 

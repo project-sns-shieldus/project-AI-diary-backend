@@ -49,8 +49,3 @@ token:
   refresh-token:
     plus-hour: 12
 
-#내부 디렉토리 저장 불가 이슈로 로컬 저장으로 변경
-image:
-  upload:
-    dir: C:\image
-
